@@ -2,7 +2,7 @@
 
 Character Export to CoreRPG XML
 
-##Usage
+## Usage
 
 1. select token of a character
 2. !export
@@ -10,18 +10,18 @@ Character Export to CoreRPG XML
 3. import file in FantasyGrounds or
 4. import file in https://www.alonlinetools.net/FGCharacterSheet.aspx
 
-##Known Limitations
+## Known Limitations
 
-###Roll20
+### Roll20
 
 * no field for faction
 * inline rolls aren't substituted (e.g. in spell descriptions)
 
-###CoreRPG XML
+### CoreRPG XML
 
 * no elements for eyes, skin, hair 
 
-###PDF
+### PDF
 
 * all lists are alphabetically reordert 
 * limited fieldsize cuts off some textfields (personal trait, bonds, notes etc.) and lists (items, attacks..)
