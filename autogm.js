@@ -2,10 +2,11 @@
 //
 // auto sets controlledby and inplayerjournals for new characters
 // if charactername matches 'text::playername'
+// where playername is the displayname
 //
 // Github:      https://github.com/nesges/roll20-char-export
 // by:          Thomas Nesges <thomas@nesges.eu>
-// Version:     0.3
+// Version:     0.4
 
 on('ready',function() {
     'use strict';
@@ -33,20 +34,28 @@ on('ready',function() {
             var playerName;
             var player;
             var m;
+            
+            if(getAttrByName(char.id, 'npc')==1) {
+                // is an npc: ignore
+                return;
+            }
+            
             // if charname ist assembled of text1::text2
             if(m = charName.match(/(.+)\s*::\s*(.+)/)) {
-                // search for a player named text2
+                playerName = m[2].trim();
+            } else if(m = charName.match(/(.+)\s*[(]\s*(.+)[)]/)) {
                 playerName = m[2].trim();
             }
             if(typeof playerName != 'undefined') {
+                // search for a player named text2
+                // displayname may have been changed
                 var players = findObjs({
                         _type: "player",
                         _displayname: playerName
                     });
                 // if player found
                 if(typeof players == 'undefined' || players.length!=1) {
-                    // playername is not legit
-                    logChat('<b>' + charName + '</b>: player <b>' + playerName + '</b> not found');
+                    // playername is not legit or displayname has been changed: ignore
                     return;
                 }
                 player = players[0];
@@ -69,7 +78,7 @@ on('ready',function() {
                 });
                 
                 if(tokens.length < 1) {
-                    logChat('WARNING: <b>' + charName + '</b> has no token');
+                    logChat(' - <b>' + charName + '</b> has no token');
                 }
             }
         });
