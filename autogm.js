@@ -1,17 +1,17 @@
 // AutoGM
 //
-// auto sets controlledby and inplayerjournals for new characters
+// autosets controlledby and inplayerjournals for new characters
 // if charactername matches 'text::playername'
 // where playername is the displayname
 //
 // Github:      https://github.com/nesges/roll20-char-export
 // by:          Thomas Nesges <thomas@nesges.eu>
-// Version:     0.4
+// Version:     0.5
 
 on('ready',function() {
     'use strict';
     
-    log('-=> autogm v0.3 <=-');
+    log('.oO( autogm v0.5 )');
     
     // run setControlledBy() on startup
     setControlledBy();
@@ -54,8 +54,26 @@ on('ready',function() {
                         _displayname: playerName
                     });
                 // if player found
-                if(typeof players == 'undefined' || players.length!=1) {
-                    // playername is not legit or displayname has been changed: ignore
+                if(typeof players == 'undefined') {
+                    // no player found, try a fuzzy search
+                    var found=0;
+                    var players2 = findObjs({
+                        _type: "player",
+                    });
+                    players2.forEach(function(player2, index) {
+                        if(player2.match(new RegExp(playerName, 'i'))) {
+                            player = player2;
+                            found++;
+                            if(found >1) {
+                                // more than one player found
+                                log('player name ' +playerName+ ' is not unique, can\'t autogm character ' + charName);
+                                return;
+                            }
+                        }
+                    });
+                } else if(players.length>1) {
+                    // more than one player found
+                    log('player name ' +playerName+ ' is not unique, can\'t autogm character ' + charName);
                     return;
                 }
                 player = players[0];
@@ -72,14 +90,14 @@ on('ready',function() {
                 logChat('<b>' + charName + '</b> controlled by <b>' + playerName + '</b> now');
 
                 // does the character have a token?
-                var tokens = findObjs({
-                    _type: "graphic",
-                    represents: char.id
-                });
-                
-                if(tokens.length < 1) {
-                    logChat(' - <b>' + charName + '</b> has no token');
-                }
+                //var tokens = findObjs({
+                //    _type: "graphic",
+                //    represents: char.id
+                //});
+                //
+                //if(tokens.length < 1) {
+                //    logChat(' - <b>' + charName + '</b> has no token');
+                //}
             }
         });
     }
