@@ -6,12 +6,12 @@
 //
 // Github:      https://github.com/nesges/roll20-char-export
 // by:          Thomas Nesges <thomas@nesges.eu>
-// Version:     0.5
+// Version:     0.6
 
 on('ready',function() {
     'use strict';
     
-    log('.oO( autogm v0.5 )');
+    log('.oO( autogm v0.6 )');
     
     // run setControlledBy() on startup
     setControlledBy();
@@ -19,6 +19,7 @@ on('ready',function() {
     on("chat:message", function(msg) {
         if (msg.type == "api" && msg.content.indexOf("!autogm") === 0) {
             setControlledBy();
+            logChat('autogm done.');
         }
     });
     
@@ -53,15 +54,16 @@ on('ready',function() {
                         _type: "player",
                         _displayname: playerName
                     });
-                // if player found
-                if(typeof players == 'undefined') {
+
+                if(typeof players == 'undefined' || players.length==0) {
                     // no player found, try a fuzzy search
                     var found=0;
                     var players2 = findObjs({
                         _type: "player",
                     });
                     players2.forEach(function(player2, index) {
-                        if(player2.match(new RegExp(playerName, 'i'))) {
+                        if(player2.get('_displayname').match(new RegExp(playerName, 'i'))) {
+                            //log(playerName + ' ~ ' + player2.get('_displayname'));
                             player = player2;
                             found++;
                             if(found >1) {
@@ -75,15 +77,17 @@ on('ready',function() {
                     // more than one player found
                     log('player name ' +playerName+ ' is not unique, can\'t autogm character ' + charName);
                     return;
+                } else {
+                    // 1 player found
+                    player = players[0];
                 }
-                player = players[0];
             }
             
-            //log(charName + ' c:' + char.get('controlledby') + ' j:' + char.get('inplayerjournals'))
+            //log(charName + ' c:' + char.get('controlledby') + ' j:' + char.get('inplayerjournals') + ' p:' + player.get('_displayname'));
             
             // if player found and
             // if controlledby is not set or to an other user
-            if(typeof player != 'undefined' && (char.get('controlledby')=='' || char.get('controlledby')!=player.id)) {
+            if(typeof player != 'undefined' && (typeof char.get('controlledby') == 'undefined' || char.get('controlledby')=='' || char.get('controlledby')!=player.id)) {
                 // set controlledby and inplayerjournals to that player
                 char.set('controlledby', player.id);
                 char.set('inplayerjournals', player.id);

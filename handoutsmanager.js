@@ -13,12 +13,12 @@
 //
 // Github:      https://github.com/nesges/roll20-char-export
 // by:          Thomas Nesges <thomas@nesges.eu>
-// Version:     0.1
+// Version:     0.2
 
 on('ready',function() {
     'use strict';
     
-    log('.oO( handouts manager v0.1 )');
+    log('.oO( handoutsmanager v0.2 )');
     
     on("chat:message", function(msg) {
         if (msg.type == "api") {
