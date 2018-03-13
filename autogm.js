@@ -11,7 +11,7 @@
 on('ready',function() {
     'use strict';
     
-    log('.oO( autogm v0.6 )');
+    log('.oO( autogm v0.7 )');
     
     // run setControlledBy() on startup
     setControlledBy();
@@ -44,7 +44,7 @@ on('ready',function() {
             // if charname ist assembled of text1::text2
             if(m = charName.match(/(.+)\s*::\s*(.+)/)) {
                 playerName = m[2].trim();
-            } else if(m = charName.match(/(.+)\s*[(]\s*(.+)[)]/)) {
+            } else if(m = charName.match(/(.+)\s*[(\[]\s*(.+)[)\]]/)) {
                 playerName = m[2].trim();
             }
             if(typeof playerName != 'undefined') {
