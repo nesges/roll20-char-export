@@ -6,7 +6,7 @@
 //
 // Github:      https://github.com/nesges/roll20-char-export
 // by:          Thomas Nesges <thomas@nesges.eu>
-// Version:     0.6
+// Version:     0.7
 
 on('ready',function() {
     'use strict';
