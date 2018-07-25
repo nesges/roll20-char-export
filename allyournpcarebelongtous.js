@@ -5,12 +5,12 @@
 //
 // Github:      https://github.com/nesges/roll20-char-export
 // by:          Thomas Nesges <thomas@nesges.eu>
-// Version:     0.1
+// Version:     0.2
 
 on('ready',function() {
     'use strict';
     
-    log('.oO( allyournpcarebelongtous v0.1 )');
+    log('.oO( allyournpcarebelongtous v0.2 )');
     
     
     on("chat:message", function(msg) {
@@ -29,9 +29,6 @@ on('ready',function() {
         
         characters.forEach(function(char, index) {
             var charName = char.get("name");
-            var playerName;
-            var player;
-            var m;
             
             if(getAttrByName(char.id, 'npc')!=1) {
                 // is no npc: ignore
